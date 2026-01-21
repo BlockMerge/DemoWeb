@@ -1,0 +1,89 @@
+name: Build Unity WebGL
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Unity WebGL
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+      
+      # Cache Library folder for faster builds
+      - name: Cache Unity Library
+        uses: actions/cache@v3
+        with:
+          path: Library
+          key: Library-WebGL-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-WebGL-
+            Library-
+      
+      # Free up disk space (Unity builds can be large)
+      - name: Free Disk Space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf "/usr/local/share/boost"
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+      
+      # Build Unity project for WebGL
+      - name: Build Unity Project
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: WebGL
+          buildName: BlockMerge
+          buildsPath: build
+          # Uncomment to use a specific Unity version
+          # unityVersion: 2022.3.10f1
+      
+      # List build output for debugging
+      - name: List Build Output
+        run: |
+          echo "Build directory contents:"
+          ls -R build/
+      
+      # Upload build artifact
+      - name: Upload WebGL Build
+        uses: actions/upload-artifact@v4
+        with:
+          name: unity-webgl-build
+          path: build/WebGL/BlockMerge
+          retention-days: 7
+          if-no-files-found: error
+      
+      # Trigger DemoWeb deployment
+      - name: Trigger DemoWeb Deployment
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
+          repository: BlockMerge/DemoWeb
+          event-type: unity-build-ready
+          client-payload: '{"build_number": "${{ github.run_number }}", "commit_sha": "${{ github.sha }}"}'
+      
+      # Notify on success
+      - name: Build Success
+        if: success()
+        run: |
+          echo "✅ Unity WebGL build completed successfully!"
+          echo "🚀 Deployment to DemoWeb triggered!"
+      
+      # Notify on failure
+      - name: Build Failed
+        if: failure()
+        run: |
+          echo "❌ Unity WebGL build failed!"
+          echo "Check the logs above for details."

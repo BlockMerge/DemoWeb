@@ -1,0 +1,62 @@
+name: Deploy Unity WebGL Build
+
+on:
+  # Trigger when BlockMerge2d repository pushes to main
+  repository_dispatch:
+    types: [unity-build-ready]
+  
+  # Manual trigger for testing
+  workflow_dispatch:
+
+jobs:
+  receive-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout DemoWeb repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Download Unity Build Artifact
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          github_token: ${{ secrets.PAT_TOKEN }}
+          workflow: build-unity.yml
+          repo: BlockMerge/BlockMerge2d
+          name: unity-webgl-build
+          path: ./game-temp
+      
+      - name: Clear old game folder
+        run: |
+          if [ -d "game" ]; then
+            rm -rf game
+          fi
+          mkdir -p game
+      
+      - name: Move build to game folder
+        run: |
+          mv game-temp/* game/
+          rm -rf game-temp
+      
+      - name: Ensure .nojekyll exists
+        run: |
+          touch .nojekyll
+      
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add game/ .nojekyll
+          git diff --quiet && git diff --staged --quiet || (git commit -m "🎮 Auto-deploy Unity WebGL build from BlockMerge2d" && git push)
+      
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: github.ref == 'refs/heads/main'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          publish_branch: gh-pages
+          force_orphan: false
+          keep_files: false
+          enable_jekyll: false
