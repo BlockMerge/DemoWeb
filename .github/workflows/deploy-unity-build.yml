@@ -49,14 +49,3 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add game/ .nojekyll
           git diff --quiet && git diff --staged --quiet || (git commit -m "🎮 Auto-deploy Unity WebGL build from BlockMerge2d" && git push)
-      
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        if: github.ref == 'refs/heads/main'
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
-          publish_branch: gh-pages
-          force_orphan: false
-          keep_files: false
-          enable_jekyll: false
