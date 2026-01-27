@@ -39,6 +39,16 @@ jobs:
           mv game-temp/* game/
           rm -rf game-temp
       
+      - name: Decompress Brotli files
+        run: |
+          # Install brotli if not present (usually is on ubuntu-latest)
+          sudo apt-get update && sudo apt-get install -y brotli
+          
+          # Decompress all .br files and rename them
+          # We keep the originals for now or just replace them?
+          # Replacing is better so index.html can point to the uncompressed ones.
+          find game/Build -name "*.br" -exec sh -c 'brotli -d "$1" && rm "$1"' _ {} \;
+      
       - name: Ensure .nojekyll exists
         run: |
           touch .nojekyll

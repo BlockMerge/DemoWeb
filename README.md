@@ -270,20 +270,26 @@ npx vercel
 
 **Error Message:**
 ```
-Unable to parse Build/game.framework.js.br!
-If using custom web server, verify that web server is sending .br files 
-with HTTP Response Header "Content-Encoding: br"
+Unable to parse Build/BlockMerge.framework.js.br!
+This can happen if build compression was enabled but web server hosting the content 
+was misconfigured to not serve the file with HTTP Response Header "Content-Encoding: br"
 ```
 
-**Solution:**
+**Solutions:**
 
-This error occurs because standard HTTP servers don't support Brotli compression. **Use the custom server**:
+1. **Use the improved `server.py` (Local Development):**
+   The included `server.py` has been updated to automatically detect `.br` files and serve them with the correct headers, even if they are requested without the `.br` extension.
+   ```bash
+   python server.py
+   ```
 
-```bash
-# Stop your current server (Ctrl+C)
-# Then run:
-python server.py
-```
+2. **Automated Deployment (GitHub Pages):**
+   The CI/CD pipeline (`deploy-unity-build.yml`) now automatically decompresses Brotli files during deployment. This ensures the game works on GitHub Pages and other static hosts without any configuration needed.
+
+3. **Manual Fix (If not using CI/CD):**
+   If you are manually copying files, you should either:
+   - Disable compression in Unity (Project Settings → Player → Publishing Settings → Compression Format: Disabled)
+   - Or decompress the `.br` files in the `Build/` folder and remove the `.br` extension from `index.html`.
 
 **Alternative Solutions:**
 
