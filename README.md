@@ -11,6 +11,12 @@ A beautiful, mobile-optimized web page to host and play your Unity WebGL build. 
 - **📐 Responsive** - Adapts to landscape mode automatically
 - **⌨️ Keyboard Shortcuts** - 'F' for fullscreen, 'Esc' to exit
 - **🚀 CI/CD Pipeline** - Automatic deployment from Unity builds
+- **📲 PWA Support** - Install as an app on Android and iOS
+- **🔌 Offline Mode** - Works offline after first load
+- **🍎 iOS Optimized** - Safe area support, custom fullscreen, splash screens
+- **🤖 Android Optimized** - Install prompts, theme colors, performance tuning
+- **👆 Touch Optimized** - Prevents zoom, pull-to-refresh, and unwanted gestures
+
 
 ## 🔄 Automated Deployment
 
@@ -167,6 +173,17 @@ The page is optimized for mobile games:
 - **Landscape Mode**: Automatically switches to 16:9 aspect ratio
 - **Fullscreen**: Works on both mobile and desktop browsers
 - **Touch Controls**: Unity's touch input works seamlessly
+
+### 📲 Install as App (PWA)
+
+**iOS (iPhone/iPad):**
+1. Open in Safari → Tap Share → "Add to Home Screen"
+
+**Android:**
+1. Open in Chrome/Edge → Menu (⋮) → "Add to Home Screen" or "Install app"
+
+The app will work offline after first load and provides a native app-like experience!
+
 
 ## ⌨️ Controls
 

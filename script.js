@@ -1,3 +1,40 @@
+// ===== PWA Support =====
+let deferredPrompt;
+
+// Register Service Worker
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+            .then((registration) => {
+                console.log('Service Worker registered successfully:', registration.scope);
+            })
+            .catch((error) => {
+                console.log('Service Worker registration failed:', error);
+            });
+    });
+}
+
+// Handle PWA Install Prompt
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Prevent the mini-infobar from appearing on mobile
+    e.preventDefault();
+    // Stash the event so it can be triggered later
+    deferredPrompt = e;
+    // Show install button or notification
+    showInstallPromotion();
+});
+
+// Handle successful installation
+window.addEventListener('appinstalled', () => {
+    console.log('PWA was installed successfully');
+    deferredPrompt = null;
+});
+
+function showInstallPromotion() {
+    // You can add a custom install button here if desired
+    console.log('App can be installed');
+}
+
 // ===== DOM Elements =====
 const elements = {
     gameFrame: document.getElementById('game-frame'),
@@ -12,6 +49,7 @@ const elements = {
 function init() {
     setupEventListeners();
     simulateLoading();
+    preventMobileBehaviors();
 }
 
 // ===== Event Listeners =====
@@ -77,8 +115,8 @@ function handleGameError() {
 
 // ===== iOS Detection =====
 function isIOS() {
-    return /iPad|iPhone|iPod/.test(navigator.userAgent) || 
-           (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 }
 
 // ===== Fullscreen Handling =====
@@ -102,7 +140,7 @@ function toggleFullscreen() {
 function handleIOSFullscreen() {
     // On iOS, try to make the iframe fullscreen
     const iframe = elements.gameFrame;
-    
+
     // Check if iframe supports webkitEnterFullscreen (for video elements in iframe)
     if (iframe.webkitEnterFullscreen) {
         try {
@@ -128,14 +166,14 @@ function handleIOSFullscreen() {
 function fallbackFullscreen() {
     // Fallback: maximize viewport and scroll to game
     const gameContainer = elements.gameContainer;
-    
+
     if (!gameContainer.classList.contains('ios-fullscreen')) {
         gameContainer.classList.add('ios-fullscreen');
         document.body.classList.add('ios-fullscreen-mode');
-        
+
         // Scroll to game
         gameContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        
+
         // Update button
         elements.fullscreenBtn.innerHTML = `
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -146,7 +184,7 @@ function fallbackFullscreen() {
     } else {
         gameContainer.classList.remove('ios-fullscreen');
         document.body.classList.remove('ios-fullscreen-mode');
-        
+
         // Update button
         elements.fullscreenBtn.innerHTML = `
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -227,6 +265,57 @@ document.addEventListener('keydown', (e) => {
         exitFullscreen();
     }
 });
+
+// ===== Mobile Optimizations =====
+function preventMobileBehaviors() {
+    // Prevent pull-to-refresh on mobile
+    document.body.addEventListener('touchmove', (e) => {
+        if (e.target === document.body) {
+            e.preventDefault();
+        }
+    }, { passive: false });
+
+    // Prevent double-tap zoom on game container
+    let lastTouchEnd = 0;
+    elements.gameContainer.addEventListener('touchend', (e) => {
+        const now = Date.now();
+        if (now - lastTouchEnd <= 300) {
+            e.preventDefault();
+        }
+        lastTouchEnd = now;
+    }, false);
+
+    // Prevent context menu on long press
+    elements.gameContainer.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+    });
+
+    // Handle orientation changes
+    window.addEventListener('orientationchange', () => {
+        // Small delay to allow the browser to update dimensions
+        setTimeout(() => {
+            // Adjust game container if needed
+            if (elements.gameContainer.classList.contains('fullscreen') ||
+                elements.gameContainer.classList.contains('ios-fullscreen')) {
+                // Ensure fullscreen stays fullscreen after rotation
+                elements.gameContainer.style.height = '100vh';
+            }
+        }, 100);
+    });
+
+    // Detect if running as installed PWA
+    if (window.matchMedia('(display-mode: standalone)').matches ||
+        window.navigator.standalone === true) {
+        document.body.classList.add('pwa-mode');
+        console.log('Running as installed PWA');
+    }
+
+    // Handle safe area insets for iOS notch
+    if (isIOS()) {
+        document.documentElement.style.setProperty('--safe-area-inset-top', 'env(safe-area-inset-top)');
+        document.documentElement.style.setProperty('--safe-area-inset-bottom', 'env(safe-area-inset-bottom)');
+    }
+}
 
 // ===== Initialize App =====
 document.addEventListener('DOMContentLoaded', init);
