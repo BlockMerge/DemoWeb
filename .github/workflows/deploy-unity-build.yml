@@ -18,26 +18,26 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Download Unity Build Artifact
-        uses: dawidd6/action-download-artifact@v3
-        with:
-          github_token: ${{ secrets.PAT_TOKEN }}
-          workflow: build-unity.yml
-          repo: BlockMerge/BlockMerge2d
-          name: unity-webgl-build
-          path: ./game-temp
+      # - name: Download Unity Build Artifact
+      #   uses: dawidd6/action-download-artifact@v3
+      #   with:
+      #     github_token: ${{ secrets.PAT_TOKEN }}
+      #     workflow: build-unity.yml
+      #     repo: BlockMerge/BlockMerge2d
+      #     name: unity-webgl-build
+      #     path: ./game-temp
       
-      - name: Clear old game folder
-        run: |
-          if [ -d "game" ]; then
-            rm -rf game
-          fi
-          mkdir -p game
+      # - name: Clear old game folder
+      #   run: |
+      #     if [ -d "game" ]; then
+      #       rm -rf game
+      #     fi
+      #     mkdir -p game
       
-      - name: Move build to game folder
-        run: |
-          mv game-temp/* game/
-          rm -rf game-temp
+      # - name: Move build to game folder
+      #   run: |
+      #     mv game-temp/* game/
+      #     rm -rf game-temp
       
       - name: Decompress Brotli files
         run: |
