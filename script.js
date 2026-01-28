@@ -75,8 +75,20 @@ function handleGameError() {
     elements.loadingProgress.style.background = '#ef4444';
 }
 
+// ===== iOS Detection =====
+function isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+           (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
 // ===== Fullscreen Handling =====
 function toggleFullscreen() {
+    // iOS Safari has limited fullscreen support
+    if (isIOS()) {
+        handleIOSFullscreen();
+        return;
+    }
+
     if (!document.fullscreenElement &&
         !document.webkitFullscreenElement &&
         !document.mozFullScreenElement &&
@@ -87,13 +99,75 @@ function toggleFullscreen() {
     }
 }
 
+function handleIOSFullscreen() {
+    // On iOS, try to make the iframe fullscreen
+    const iframe = elements.gameFrame;
+    
+    // Check if iframe supports webkitEnterFullscreen (for video elements in iframe)
+    if (iframe.webkitEnterFullscreen) {
+        try {
+            iframe.webkitEnterFullscreen();
+        } catch (e) {
+            console.log('iOS fullscreen not available for iframe');
+            // Fallback: scroll to game and hide other elements
+            fallbackFullscreen();
+        }
+    } else if (iframe.webkitRequestFullscreen) {
+        try {
+            iframe.webkitRequestFullscreen();
+        } catch (e) {
+            console.log('iOS webkit fullscreen failed');
+            fallbackFullscreen();
+        }
+    } else {
+        // Fallback for iOS
+        fallbackFullscreen();
+    }
+}
+
+function fallbackFullscreen() {
+    // Fallback: maximize viewport and scroll to game
+    const gameContainer = elements.gameContainer;
+    
+    if (!gameContainer.classList.contains('ios-fullscreen')) {
+        gameContainer.classList.add('ios-fullscreen');
+        document.body.classList.add('ios-fullscreen-mode');
+        
+        // Scroll to game
+        gameContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        
+        // Update button
+        elements.fullscreenBtn.innerHTML = `
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 3V8H3M21 8H16V3M16 21V16H21M3 16H8V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Exit Fullscreen
+        `;
+    } else {
+        gameContainer.classList.remove('ios-fullscreen');
+        document.body.classList.remove('ios-fullscreen-mode');
+        
+        // Update button
+        elements.fullscreenBtn.innerHTML = `
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 3H5C4.46957 3 3.96086 3.21071 3.58579 3.58579C3.21071 3.96086 3 4.46957 3 5V8M21 8V5C21 4.46957 20.7893 3.96086 20.4142 3.58579C20.0391 3.21071 19.5304 3 19 3H16M16 21H19C19.5304 21 20.0391 20.7893 20.4142 20.4142C20.7893 20.0391 21 19.5304 21 19V16M3 16V19C3 19.5304 3.21071 20.0391 3.58579 20.4142C3.96086 20.7893 4.46957 21 5 21H8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Fullscreen
+        `;
+    }
+}
+
 function enterFullscreen() {
     const elem = elements.gameContainer;
 
     if (elem.requestFullscreen) {
-        elem.requestFullscreen();
+        elem.requestFullscreen().catch(err => {
+            console.log('Fullscreen request failed:', err);
+        });
     } else if (elem.webkitRequestFullscreen) {
         elem.webkitRequestFullscreen();
+    } else if (elem.webkitEnterFullscreen) {
+        elem.webkitEnterFullscreen();
     } else if (elem.mozRequestFullScreen) {
         elem.mozRequestFullScreen();
     } else if (elem.msRequestFullscreen) {
@@ -106,6 +180,8 @@ function exitFullscreen() {
         document.exitFullscreen();
     } else if (document.webkitExitFullscreen) {
         document.webkitExitFullscreen();
+    } else if (document.webkitCancelFullScreen) {
+        document.webkitCancelFullScreen();
     } else if (document.mozCancelFullScreen) {
         document.mozCancelFullScreen();
     } else if (document.msExitFullscreen) {
