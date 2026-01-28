@@ -2,8 +2,8 @@ name: Deploy Unity WebGL Build
 
 on:
   # Trigger when BlockMerge2d repository pushes to main
-  repository_dispatch:
-    types: [unity-build-ready]
+  # repository_dispatch:
+  #   types: [unity-build-ready]
   
   # Manual trigger for testing
   workflow_dispatch:
