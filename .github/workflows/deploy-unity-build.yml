@@ -48,9 +48,12 @@ jobs:
           sudo apt-get update && sudo apt-get install -y brotli
           
           # Decompress all .br files and rename them
-          # We keep the originals for now or just replace them?
-          # Replacing is better so index.html can point to the uncompressed ones.
           find game/Build -name "*.br" -exec sh -c 'brotli -d "$1" && rm "$1"' _ {} \;
+          
+          # Patch index.html to point to decompressed files instead of .br
+          sed -i 's/\.data\.br/.data/g' game/index.html
+          sed -i 's/\.framework\.js\.br/.framework.js/g' game/index.html
+          sed -i 's/\.wasm\.br/.wasm/g' game/index.html
       
       - name: Ensure .nojekyll exists
         run: |
