@@ -9,7 +9,7 @@
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=648 height=1152 tabindex="-1"></canvas>
+      <canvas id="unity-canvas" width=345 height=614 tabindex="-1"></canvas>
       <div id="unity-loading-bar">
         <div id="unity-logo"></div>
         <div id="unity-progress-bar-empty">
@@ -61,7 +61,7 @@
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "Block Merge",
-        productVersion: "0.0.79",
+        productVersion: "0.0.80",
         showBanner: unityShowBanner,
         // errorHandler: function(err, url, line) {
         //    alert("error " + err + " occurred at line " + line);
@@ -104,8 +104,8 @@
 
       } else {
         // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
-        canvas.style.width = "648px";
-        canvas.style.height = "1152px";
+        canvas.style.width = "345px";
+        canvas.style.height = "614px";
       }
 
       document.querySelector("#unity-loading-bar").style.display = "block";
