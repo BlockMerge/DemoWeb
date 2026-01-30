@@ -8,9 +8,8 @@ body {
 }
 
 #unity-container.unity-desktop {
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%)
+    width: 100%;
+    height: 100%;
 }
 
 #unity-container.unity-mobile {
@@ -20,7 +19,9 @@ body {
 }
 
 #unity-canvas {
-    background: #231F20
+    background: #231F20;
+    width: 100%;
+    height: 100%;
 }
 
 .unity-mobile #unity-canvas {
@@ -58,7 +59,7 @@ body {
 }
 
 #unity-footer {
-    position: relative
+    display: none;
 }
 
 .unity-mobile #unity-footer {
