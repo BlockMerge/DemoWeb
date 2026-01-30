@@ -269,6 +269,43 @@ body::before {
     margin: 0 auto var(--spacing-xl);
 }
 
+.exit-fullscreen-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
+    background: rgba(10, 14, 26, 0.6);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: all var(--transition-base);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.game-container.fullscreen .exit-fullscreen-btn,
+.game-container.ios-fullscreen .exit-fullscreen-btn {
+    display: flex;
+}
+
+.exit-fullscreen-btn:hover {
+    background: var(--color-primary);
+    transform: scale(1.1) rotate(90deg);
+    border-color: transparent;
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+}
+
+.exit-fullscreen-btn:active {
+    transform: scale(0.95);
+}
+
 .game-container.fullscreen {
     position: fixed;
     top: 0;

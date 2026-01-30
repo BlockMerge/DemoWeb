@@ -42,7 +42,8 @@ const elements = {
     loadingScreen: document.getElementById('loading-screen'),
     loadingProgress: document.getElementById('loading-progress'),
     loadingText: document.getElementById('loading-text'),
-    fullscreenBtn: document.getElementById('fullscreen-btn')
+    fullscreenBtn: document.getElementById('fullscreen-btn'),
+    exitFullscreenBtn: document.getElementById('exit-fullscreen-btn')
 };
 
 // ===== Initialize =====
@@ -54,8 +55,9 @@ function init() {
 
 // ===== Event Listeners =====
 function setupEventListeners() {
-    // Fullscreen button
+    // Fullscreen buttons
     elements.fullscreenBtn.addEventListener('click', toggleFullscreen);
+    elements.exitFullscreenBtn.addEventListener('click', exitFullscreen);
 
     // Listen for fullscreen changes
     document.addEventListener('fullscreenchange', handleFullscreenChange);
@@ -214,6 +216,12 @@ function enterFullscreen() {
 }
 
 function exitFullscreen() {
+    // Handle iOS fallback mode
+    if (elements.gameContainer.classList.contains('ios-fullscreen')) {
+        fallbackFullscreen();
+        return;
+    }
+
     if (document.exitFullscreen) {
         document.exitFullscreen();
     } else if (document.webkitExitFullscreen) {
@@ -261,7 +269,7 @@ document.addEventListener('keydown', (e) => {
     }
 
     // Escape key to exit fullscreen
-    if (e.key === 'Escape' && document.fullscreenElement) {
+    if (e.key === 'Escape' && (document.fullscreenElement || elements.gameContainer.classList.contains('ios-fullscreen'))) {
         exitFullscreen();
     }
 });
