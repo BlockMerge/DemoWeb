@@ -62,9 +62,9 @@
 html {
     scroll-behavior: smooth;
     scrollbar-width: none;
-    /* Firefox */
     -ms-overflow-style: none;
-    /* IE/Edge */
+    overflow: hidden;
+    height: 100%;
 }
 
 html::-webkit-scrollbar {
@@ -77,8 +77,12 @@ body {
     background: var(--color-bg-primary);
     color: var(--color-text-primary);
     line-height: 1.6;
-    overflow-x: hidden;
-    min-height: 100vh;
+    overflow: hidden !important;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
 }
 
 /* Animated Background */
@@ -115,9 +119,10 @@ body::before {
     max-width: 1600px;
     margin: 0 auto;
     padding: var(--spacing-sm);
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 /* ===== Header ===== */
@@ -126,8 +131,10 @@ body::before {
     justify-content: space-between;
     align-items: center;
     padding: var(--spacing-sm) 0;
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+    border-bottom: 2px solid rgba(99, 102, 241, 0.2);
     animation: slideDown 0.6s ease-out;
+    flex-shrink: 0;
 }
 
 @keyframes slideDown {
@@ -180,7 +187,7 @@ body::before {
 /* ===== Buttons ===== */
 .btn {
     padding: var(--spacing-sm) var(--spacing-lg);
-    border: none;
+    border: 2px solid transparent;
     border-radius: var(--radius-md);
     font-family: var(--font-family);
     font-size: 1rem;
@@ -189,7 +196,7 @@ body::before {
     transition: all var(--transition-base);
     display: inline-flex;
     align-items: center;
-    gap: var(--spacing-xs);
+    gap: var(--spacing-sm);
     position: relative;
     overflow: hidden;
 }
@@ -215,6 +222,7 @@ body::before {
 .btn-primary {
     background: var(--gradient-primary);
     color: white;
+    border-color: rgba(255, 255, 255, 0.2);
     box-shadow: var(--shadow-md);
 }
 
@@ -226,7 +234,7 @@ body::before {
 .btn-secondary {
     background: var(--color-bg-tertiary);
     color: var(--color-text-primary);
-    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-color: rgba(99, 102, 241, 0.4);
 }
 
 .btn-secondary:hover {
@@ -259,15 +267,16 @@ body::before {
 .game-container {
     position: relative;
     width: 100%;
-    max-width: 650px;
-    /* Mobile-friendly width */
+    max-width: 400px;
+    /* Made smaller to avoid scroll */
+    max-height: calc(100vh - 160px);
+    /* Ensure it fits vertically with header/footer */
     aspect-ratio: 9 / 16;
-    /* Portrait mobile aspect ratio */
     background: var(--color-bg-secondary);
     border-radius: var(--radius-xl);
     overflow: hidden;
-    box-shadow: var(--shadow-lg);
-    border: 1px solid rgba(99, 102, 241, 0.3);
+    box-shadow: var(--shadow-lg), 0 0 30px rgba(99, 102, 241, 0.3);
+    border: none;
     margin: 0 auto;
 }
 
@@ -451,7 +460,8 @@ body.ios-fullscreen-mode {
 
 /* ===== Instructions ===== */
 .instructions {
-    display: grid;
+    display: none;
+    /* Hidden to remove scroll and focus on game */
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: var(--spacing-lg);
     margin-bottom: var(--spacing-xl);
@@ -462,7 +472,7 @@ body.ios-fullscreen-mode {
     backdrop-filter: blur(20px);
     padding: var(--spacing-lg);
     border-radius: var(--radius-lg);
-    border: 1px solid rgba(99, 102, 241, 0.1);
+    border: 2px solid rgba(99, 102, 241, 0.3);
     transition: all var(--transition-base);
     text-align: center;
 }
@@ -492,9 +502,12 @@ body.ios-fullscreen-mode {
 /* ===== Footer ===== */
 .footer {
     text-align: center;
-    padding: var(--spacing-lg) 0;
+    padding: var(--spacing-md) 0;
+    margin-top: auto;
     color: var(--color-text-tertiary);
     font-size: 0.875rem;
+    border-top: 2px solid rgba(99, 102, 241, 0.1);
+    flex-shrink: 0;
 }
 
 /* ===== Responsive Design ===== */
