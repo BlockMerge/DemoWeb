@@ -121,6 +121,11 @@ function isIOS() {
         (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 }
 
+// ===== Android Detection =====
+function isAndroid() {
+    return /Android/.test(navigator.userAgent);
+}
+
 // ===== Fullscreen Handling =====
 function toggleFullscreen() {
     // iOS Safari has limited fullscreen support
@@ -200,6 +205,27 @@ function fallbackFullscreen() {
 function enterFullscreen() {
     const elem = elements.gameContainer;
 
+    // Android Chrome specific handling
+    if (isAndroid()) {
+        // First, try native fullscreen
+        const fullscreenPromise = elem.requestFullscreen ? elem.requestFullscreen() :
+            elem.webkitRequestFullscreen ? elem.webkitRequestFullscreen() : null;
+
+        if (fullscreenPromise) {
+            fullscreenPromise.then(() => {
+                // Force hide address bar on Android Chrome
+                setTimeout(() => {
+                    window.scrollTo(0, 1);
+                    window.scrollTo(0, 0);
+                }, 100);
+            }).catch(err => {
+                console.log('Fullscreen request failed:', err);
+            });
+        }
+        return;
+    }
+
+    // Standard fullscreen for other browsers
     if (elem.requestFullscreen) {
         elem.requestFullscreen().catch(err => {
             console.log('Fullscreen request failed:', err);
@@ -307,6 +333,13 @@ function preventMobileBehaviors() {
                 elements.gameContainer.classList.contains('ios-fullscreen')) {
                 // Ensure fullscreen stays fullscreen after rotation
                 elements.gameContainer.style.height = '100vh';
+
+                // Android Chrome specific fix
+                if (isAndroid()) {
+                    // Force recalculation of viewport height
+                    window.scrollTo(0, 1);
+                    window.scrollTo(0, 0);
+                }
             }
         }, 100);
     });
