@@ -283,6 +283,21 @@ function handleFullscreenChange() {
             </svg>
             Fullscreen
         `;
+
+        // Nudge the iframe to resize and regain focus
+        // Use a small timeout to ensure the DOM transition is finishing
+        setTimeout(() => {
+            if (elements.gameFrame) {
+                // Try to focus the iframe
+                elements.gameFrame.focus();
+
+                // Notify the iframe content to resize
+                if (elements.gameFrame.contentWindow) {
+                    elements.gameFrame.contentWindow.postMessage({ type: 'resize-nudge' }, '*');
+                    elements.gameFrame.contentWindow.focus();
+                }
+            }
+        }, 300);
     }
 }
 

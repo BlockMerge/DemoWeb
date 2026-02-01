@@ -337,6 +337,7 @@ body::before {
     margin: 0;
     max-width: none;
     max-height: none;
+    aspect-ratio: auto;
 }
 
 /* iOS Fullscreen Fallback */

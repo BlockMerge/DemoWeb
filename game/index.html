@@ -114,10 +114,12 @@
 
     var script = document.createElement("script");
     script.src = loaderUrl;
+    let myUnityInstance = null;
     script.onload = () => {
       createUnityInstance(canvas, config, (progress) => {
         document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
       }).then((unityInstance) => {
+        myUnityInstance = unityInstance;
         document.querySelector("#unity-loading-bar").style.display = "none";
         document.querySelector("#unity-fullscreen-button").onclick = () => {
           unityInstance.SetFullscreen(1);
@@ -127,6 +129,17 @@
         alert(message);
       });
     };
+
+    window.addEventListener('message', (event) => {
+      if (event.data.type === 'resize-nudge') {
+        window.dispatchEvent(new Event('resize'));
+        // If unityInstance is available, we could potentially call something, 
+        // but window resize event usually triggers Unity's internal resize.
+        setTimeout(() => {
+          window.dispatchEvent(new Event('resize'));
+        }, 100);
+      }
+    });
 
     document.body.appendChild(script);
 
