@@ -1,8 +1,4 @@
 [
-  {"id": "blockmerge", "name": "Blockmerge", "path": "builds/blockmerge/game/index.html", "description": "Play Blockmerge - A Unity WebGL game", "loadingTitle": "Loading Blockmerge...", "thumbnail": "icon-192.png"}
-,
-  {"id": "test", "name": "Test", "path": "builds/test/game/index.html", "description": "Play Test - A Unity WebGL game", "loadingTitle": "Loading Test...", "thumbnail": "icon-192.png"}
-,
-  {"id": "testardo", "name": "Testardo", "path": "builds/testardo/game/index.html", "description": "Play Testardo - A Unity WebGL game", "loadingTitle": "Loading Testardo...", "thumbnail": "icon-192.png"}
+  {"id": "blockmerge", "name": "Blockmerge", "path": "builds/blockmerge/game/index.html", "description": "Play Blockmerge - An exciting Unity WebGL game!", "loadingTitle": "Loading Blockmerge...", "thumbnail": "icon-192.png"}
 
 ]
