@@ -3,142 +3,519 @@
 
 <head>
     <meta charset="UTF-8">
-
-    <!-- Enhanced Viewport Settings for Mobile -->
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 
-    <!-- Primary Meta Tags -->
-    <title>BlockMerge - Unity WebGL Game</title>
-    <meta name="title" content="BlockMerge - Unity WebGL Game">
+    <title>Game Hub - Play Unity WebGL Games</title>
     <meta name="description"
-        content="Play BlockMerge - A Unity WebGL puzzle game. Merge blocks to create higher numbers and reach the highest score!">
+        content="Play amazing Unity WebGL games directly in your browser. Choose from our collection of exciting games!">
 
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json">
 
     <!-- Theme Colors -->
     <meta name="theme-color" content="#6366f1">
-    <meta name="msapplication-TileColor" content="#6366f1">
-    <meta name="msapplication-navbutton-color" content="#6366f1">
-
-    <!-- iOS Specific Meta Tags -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="BlockMerge">
-    <link rel="apple-touch-icon" href="icon-192.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="icon-192.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="icon-192.png">
-    <link rel="apple-touch-icon" sizes="167x167" href="icon-192.png">
-
-    <!-- Splash Screens for iOS -->
-    <link rel="apple-touch-startup-image" href="splash-640x1136.png"
-        media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)">
-    <link rel="apple-touch-startup-image" href="splash-750x1334.png"
-        media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)">
-    <link rel="apple-touch-startup-image" href="splash-1242x2208.png"
-        media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)">
-    <link rel="apple-touch-startup-image" href="splash-1125x2436.png"
-        media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)">
-    <link rel="apple-touch-startup-image" href="splash-1242x2688.png"
-        media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)">
-
-    <!-- Android Specific -->
-    <meta name="mobile-web-app-capable" content="yes">
-
-    <!-- Prevent text size adjustment on orientation change -->
-    <meta name="format-detection" content="telephone=no">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="32x32" href="icon-192.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="icon-192.png">
+    <link rel="icon" type="image/png" href="icon-192.png">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
 
-    <!-- Styles -->
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #ec4899;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --dark: #0f172a;
+            --dark-800: #1e293b;
+            --dark-700: #334155;
+            --dark-600: #475569;
+            --light: #f1f5f9;
+            --white: #ffffff;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            --gradient-5: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--dark);
+            color: var(--white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(ellipse at top, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom right, rgba(236, 72, 153, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom left, rgba(59, 130, 246, 0.15) 0%, transparent 50%);
+            z-index: 0;
+            animation: backgroundPulse 20s ease-in-out infinite;
+        }
+
+        @keyframes backgroundPulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.8;
+            }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .header-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-1);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .header-icon svg {
+            width: 32px;
+            height: 32px;
+            color: white;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--dark-600);
+            font-weight: 500;
+        }
+
+        /* Games Grid */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .game-card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            animation: fadeInUp 0.8s ease-out backwards;
+        }
+
+        .game-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .game-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .game-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .game-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .game-card:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .game-card:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .game-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: var(--shadow-2xl), 0 0 40px rgba(99, 102, 241, 0.3);
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .game-card:hover::before {
+            opacity: 1;
+        }
+
+        .game-thumbnail {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .game-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .game-card:hover .game-thumbnail img {
+            transform: scale(1.1);
+        }
+
+        .game-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .game-content {
+            padding: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .game-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .game-description {
+            color: var(--dark-600);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .game-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .game-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--dark-600);
+        }
+
+        .game-meta-item svg {
+            width: 16px;
+            height: 16px;
+            color: var(--primary-light);
+        }
+
+        .play-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .play-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        .play-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Add New Game Card */
+        .add-game-card {
+            background: rgba(30, 41, 59, 0.3);
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .add-game-card:hover {
+            background: rgba(30, 41, 59, 0.5);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .add-icon {
+            width: 64px;
+            height: 64px;
+            background: rgba(99, 102, 241, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .add-game-card:hover .add-icon {
+            background: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .add-icon svg {
+            width: 32px;
+            height: 32px;
+            color: white;
+        }
+
+        .add-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark-600);
+            transition: color 0.3s ease;
+        }
+
+        .add-game-card:hover .add-text {
+            color: white;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--dark-600);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .games-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .container {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--dark-800);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--dark-600);
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+    </style>
 </head>
 
 <body>
     <div class="container">
         <!-- Header -->
         <header class="header">
-            <div class="logo">
-                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                    <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                    <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                </svg>
-                <span class="logo-text">BlockMerge</span>
-            </div>
-            <div class="header-actions">
-                <button class="btn btn-secondary" id="fullscreen-btn">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M8 3H5C4.46957 3 3.96086 3.21071 3.58579 3.58579C3.21071 3.96086 3 4.46957 3 5V8M21 8V5C21 4.46957 20.7893 3.96086 20.4142 3.58579C20.0391 3.21071 19.5304 3 19 3H16M16 21H19C19.5304 21 20.0391 20.7893 20.4142 20.4142C20.7893 20.0391 21 19.5304 21 19V16M3 16V19C3 19.5304 3.21071 20.0391 3.58579 20.4142C3.96086 20.7893 4.46957 21 5 21H8"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                    Fullscreen
-                </button>
-            </div>
-        </header>
-
-        <!-- Game Container -->
-        <main class="game-wrapper">
-            <div class="game-container" id="game-container">
-                <button class="exit-fullscreen-btn" id="exit-fullscreen-btn" aria-label="Exit Fullscreen">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            <div class="header-logo">
+                <div class="header-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                             stroke-linejoin="round" />
                     </svg>
-                </button>
-                <div class="loading-screen" id="loading-screen">
-                    <div class="loading-content">
-                        <div class="loading-spinner"></div>
-                        <h2 class="loading-title">Loading BlockMerge...</h2>
-                        <div class="loading-bar">
-                            <div class="loading-progress" id="loading-progress"></div>
-                        </div>
-                        <p class="loading-text" id="loading-text">Initializing game...</p>
-                    </div>
                 </div>
-                <iframe id="game-frame" src="game/index.html" frameborder="0" allowfullscreen webkitallowfullscreen
-                    playsinline></iframe>
             </div>
-        </main>
+            <h1>Game Hub</h1>
+            <p class="subtitle">Choose your adventure. Play instantly in your browser.</p>
+        </header>
 
-        <!-- Instructions -->
-        <section class="instructions">
-            <div class="instruction-card">
-                <div class="instruction-icon">🎮</div>
-                <h3>How to Play</h3>
-                <p>Merge blocks to create higher numbers and reach the highest score!</p>
+        <!-- Games Grid -->
+        <div class="games-grid" id="games-grid">
+            <!-- BlockMerge Game -->
+            <div class="game-card" onclick="window.location.href='game.html?game=blockmerge'">
+                <div class="game-thumbnail">
+                    <img src="icon-192.png" alt="BlockMerge">
+                    <div class="game-badge">Unity WebGL</div>
+                </div>
+                <div class="game-content">
+                    <h2 class="game-title">BlockMerge</h2>
+                    <p class="game-description">Merge blocks to create higher numbers and reach the highest score!
+                        Master the merge mechanics in this addictive puzzle game.</p>
+                    <div class="game-meta">
+                        <div class="game-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 8V12L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+                            </svg>
+                            Puzzle
+                        </div>
+                        <div class="game-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                            4.8/5
+                        </div>
+                    </div>
+                    <button class="play-btn">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 3L19 12L5 21V3Z" fill="currentColor" />
+                        </svg>
+                        Play Now
+                    </button>
+                </div>
             </div>
-            <div class="instruction-card">
-                <div class="instruction-icon">⚡</div>
-                <h3>Quick Start</h3>
-                <p>Click fullscreen for the best experience. Game loads automatically.</p>
-            </div>
-            <div class="instruction-card">
-                <div class="instruction-icon">🏆</div>
-                <h3>Challenge</h3>
-                <p>Beat your high score and master the merge mechanics!</p>
-            </div>
-        </section>
+        </div>
 
         <!-- Footer -->
         <footer class="footer">
-            <p>&copy; 2026 BlockMerge. Built with Unity WebGL.</p>
+            <p>&copy; 2026 Game Hub. Play amazing Unity WebGL games.</p>
         </footer>
     </div>
-
-    <script src="script.js"></script>
 </body>
 
 </html>
