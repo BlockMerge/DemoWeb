@@ -44,11 +44,26 @@ jobs:
                 fi
                 first=false
                 
-                # Format the game name for display (capitalize first letter, replace dashes/underscores with spaces)
+                # Default values
                 display_name=$(echo "$game_name" | sed 's/[-_]/ /g' | sed 's/\b\(.\)/\u\1/g')
+                description="Play $display_name - An exciting Unity WebGL game!"
+                thumbnail="icon-192.png"
                 
-                # Add game entry to JSON (as single line to avoid YAML issues)
-                echo "  {\"id\": \"$game_name\", \"name\": \"$display_name\", \"path\": \"builds/$game_name/game/index.html\", \"description\": \"Play $display_name - A Unity WebGL game\", \"loadingTitle\": \"Loading $display_name...\", \"thumbnail\": \"icon-192.png\"}" >> games.json
+                # Check for metadata.json
+                if [ -f "${dir}metadata.json" ]; then
+                  echo "Found metadata.json for $game_name"
+                  # Simplistic extraction of values from JSON using grep/sed (to avoid dependency on jq)
+                  m_name=$(grep -oP '"name":\s*"\K[^"]+' "${dir}metadata.json")
+                  m_desc=$(grep -oP '"description":\s*"\K[^"]+' "${dir}metadata.json")
+                  m_thumb=$(grep -oP '"thumbnail":\s*"\K[^"]+' "${dir}metadata.json")
+                  
+                  if [ ! -z "$m_name" ]; then display_name="$m_name"; fi
+                  if [ ! -z "$m_desc" ]; then description="$m_desc"; fi
+                  if [ ! -z "$m_thumb" ]; then thumbnail="$m_thumb"; fi
+                fi
+                
+                # Add game entry to JSON
+                echo "  {\"id\": \"$game_name\", \"name\": \"$display_name\", \"path\": \"builds/$game_name/game/index.html\", \"description\": \"$description\", \"loadingTitle\": \"Loading $display_name...\", \"thumbnail\": \"$thumbnail\"}" >> games.json
               fi
             fi
           done
