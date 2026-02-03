@@ -509,6 +509,44 @@
                     </button>
                 </div>
             </div>
+
+            <!-- Test Game -->
+            <div class="game-card" onclick="window.location.href='game.html?game=test'">
+                <div class="game-thumbnail">
+                    <img src="icon-512.png" alt="Test Game">
+                    <div class="game-badge">Unity WebGL</div>
+                </div>
+                <div class="game-content">
+                    <h2 class="game-title">Test Game</h2>
+                    <p class="game-description">Test game for development and testing purposes. Use this to verify new
+                        features and functionality.</p>
+                    <div class="game-meta">
+                        <div class="game-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 8V12L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+                            </svg>
+                            Testing
+                        </div>
+                        <div class="game-meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                            Dev
+                        </div>
+                    </div>
+                    <button class="play-btn">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 3L19 12L5 21V3Z" fill="currentColor" />
+                        </svg>
+                        Play Now
+                    </button>
+                </div>
+            </div>
         </div>
 
         <!-- Footer -->
@@ -516,6 +554,60 @@
             <p>&copy; 2026 Game Hub. Play amazing Unity WebGL games.</p>
         </footer>
     </div>
+
+    <script>
+        // Load games from games.json and populate the grid
+        async function loadGames() {
+            try {
+                const response = await fetch('games.json');
+                const games = await response.json();
+
+                const gamesGrid = document.getElementById('games-grid');
+                gamesGrid.innerHTML = ''; // Clear existing content
+
+                games.forEach(game => {
+                    const gameCard = document.createElement('div');
+                    gameCard.className = 'game-card';
+                    gameCard.onclick = () => window.location.href = `game.html?game=${game.id}`;
+
+                    gameCard.innerHTML = `
+                        <div class="game-thumbnail">
+                            <img src="${game.thumbnail}" alt="${game.name}">
+                            <div class="game-badge">Unity WebGL</div>
+                        </div>
+                        <div class="game-content">
+                            <h2 class="game-title">${game.name}</h2>
+                            <p class="game-description">${game.description}</p>
+                            <div class="game-meta">
+                                <div class="game-meta-item">
+                                    <svg viewBox="0 0 24 24" fill="none">
+                                        <path d="M12 8V12L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                    </svg>
+                                    Game
+                                </div>
+                            </div>
+                            <button class="play-btn">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M5 3L19 12L5 21V3Z" fill="currentColor"/>
+                                </svg>
+                                Play Now
+                            </button>
+                        </div>
+                    `;
+
+                    gamesGrid.appendChild(gameCard);
+                });
+
+                console.log(`Loaded ${games.length} games`);
+            } catch (error) {
+                console.error('Error loading games:', error);
+            }
+        }
+
+        // Load games when page loads
+        document.addEventListener('DOMContentLoaded', loadGames);
+    </script>
 </body>
 
 </html>

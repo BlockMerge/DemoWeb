@@ -1,0 +1,71 @@
+name: Update Games List
+
+on:
+  push:
+    paths:
+      - 'builds/**'
+  workflow_dispatch:
+
+jobs:
+  update-games-json:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Scan builds folder and generate games.json
+        run: |
+          #!/bin/bash
+          echo "Scanning builds folder for games..."
+          
+          # Start JSON array
+          echo "[" > games.json
+          
+          first=true
+          
+          # Loop through all directories in builds/
+          for dir in builds/*/; do
+            if [ -d "$dir" ]; then
+              # Get the game name (folder name)
+              game_name=$(basename "$dir")
+              
+              # Check if game/index.html exists
+              if [ -f "${dir}game/index.html" ]; then
+                echo "Found game: $game_name"
+                
+                # Add comma if not first item
+                if [ "$first" = false ]; then
+                  echo "," >> games.json
+                fi
+                first=false
+                
+                # Format the game name for display (capitalize first letter, replace dashes/underscores with spaces)
+                display_name=$(echo "$game_name" | sed 's/[-_]/ /g' | sed 's/\b\(.\)/\u\1/g')
+                
+                # Add game entry to JSON (as single line to avoid YAML issues)
+                echo "  {\"id\": \"$game_name\", \"name\": \"$display_name\", \"path\": \"builds/$game_name/game/index.html\", \"description\": \"Play $display_name - A Unity WebGL game\", \"loadingTitle\": \"Loading $display_name...\", \"thumbnail\": \"icon-192.png\"}" >> games.json
+              fi
+            fi
+          done
+          
+          # Close JSON array
+          echo "" >> games.json
+          echo "]" >> games.json
+          
+          echo "Generated games.json:"
+          cat games.json
+      
+      - name: Commit games.json
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add games.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Auto-update games.json [skip ci]"
+            git push
+          fi

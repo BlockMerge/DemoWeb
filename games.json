@@ -1,0 +1,18 @@
+[
+    {
+        "id": "blockmerge",
+        "name": "BlockMerge",
+        "path": "builds/blockmerge/game/index.html",
+        "description": "Merge blocks to create higher numbers and reach the highest score! Master the merge mechanics in this addictive puzzle game.",
+        "loadingTitle": "Loading BlockMerge...",
+        "thumbnail": "icon-192.png"
+    },
+    {
+        "id": "test",
+        "name": "Test Game",
+        "path": "builds/test/game/index.html",
+        "description": "Test game for development and testing purposes.",
+        "loadingTitle": "Loading Test Game...",
+        "thumbnail": "icon-512.png"
+    }
+]
