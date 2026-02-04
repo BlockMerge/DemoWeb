@@ -120,13 +120,19 @@ body::before {
 .container {
     max-width: 1600px;
     margin: 0 auto;
-    padding: var(--spacing-sm);
+    padding: var(--spacing-md);
     height: 100vh;
     height: 100dvh;
     display: flex;
     flex-direction: column;
     overflow: hidden;
     position: relative;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: var(--spacing-xs);
+    }
 }
 
 /* ===== Header ===== */
@@ -309,17 +315,35 @@ body::before {
     width: 100%;
     height: 100%;
     max-width: 500px;
-    /* Increased slightly for better fit */
+    /* Maintain 9:16 aspect ratio as the primary constraint */
     aspect-ratio: 9 / 16;
-    background: var(--color-game-bg);
-    border-radius: var(--radius-xl);
+    background: #231f20;
+    /* Exact Unity background color match */
+    border-radius: 40px;
+    /* More pronounced 'phone' corners */
     overflow: hidden;
-    box-shadow: var(--shadow-lg), 0 0 30px rgba(99, 102, 241, 0.3);
-    border: none;
+    box-shadow:
+        0 0 0 2px rgba(255, 255, 255, 0.05),
+        /* Subtle outer rim */
+        0 20px 50px rgba(0, 0, 0, 0.6),
+        /* Deep shadow */
+        0 0 80px rgba(99, 102, 241, 0.15);
+    /* Subtle glow */
+    border: 8px solid #131824;
+    /* 'Bezel' frame */
     margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
+    /* Ensure it doesn't exceed parent height while maintaining aspect ratio */
+    max-height: 100%;
+    width: auto;
+    transition: all var(--transition-base);
+}
+
+/* Remove the checkerboard pattern that revealed the gaps */
+.game-container::before {
+    display: none;
 }
 
 /* Exit Fullscreen Button */
@@ -426,12 +450,11 @@ body.ios-fullscreen-mode {
 .game-container.ios-fullscreen #game-frame {
     width: 100%;
     height: 100%;
-    /* Allow more flexible scaling in fullscreen */
-    max-width: min(100vw, calc(100vh * 9 / 13));
-    /* Adjusted from 9/16 to fill more space in modern phones */
+    /* Strict adherence to 9:16 for portrait mobile games */
+    max-width: min(100vw, calc(100vh * 9 / 16));
     max-height: 100%;
     margin: auto;
-    object-fit: contain;
+    background: #231f20;
 }
 
 /* ===== Loading Screen ===== */
@@ -592,15 +615,17 @@ body.ios-fullscreen-mode {
         flex-direction: row;
         flex-wrap: wrap;
         gap: var(--spacing-sm);
+        padding: var(--spacing-xs) var(--spacing-sm);
     }
 
     .game-container {
         max-width: 100%;
         max-height: 100%;
-        width: 100%;
-        height: 100%;
-        aspect-ratio: unset;
-        /* Allow flexibility on mobile */
+        width: auto;
+        height: auto;
+        aspect-ratio: 9 / 16;
+        border-radius: 32px;
+        border-width: 6px;
     }
 
     .instructions {
@@ -624,15 +649,24 @@ body.ios-fullscreen-mode {
 
     .game-container {
         max-width: 100%;
-        height: 100%;
-        border-radius: 0;
-        border: none;
+        height: auto;
+        width: auto;
+        aspect-ratio: 9 / 16;
+        border-radius: 24px;
+        border-width: 4px;
         flex: 1;
     }
 
     .header {
-        margin-bottom: var(--spacing-sm);
+        margin-bottom: 0;
+        padding: var(--spacing-xs) var(--spacing-sm);
+        background: var(--color-bg-secondary);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer {
         padding: var(--spacing-xs) 0;
+        margin-top: 0;
     }
 
     .logo-icon {
