@@ -1,6 +1,8 @@
 [
   {"id": "blockmerge", "name": "Blockmerge", "path": "builds/blockmerge/game/index.html", "description": "Play Blockmerge - An exciting Unity WebGL game!", "loadingTitle": "Loading Blockmerge...", "thumbnail": "icon-192.png"}
 ,
+  {"id": "quick-test", "name": "Quick Test", "path": "builds/quick-test/game/index.html", "description": "Play Quick Test - An exciting Unity WebGL game!", "loadingTitle": "Loading Quick Test...", "thumbnail": "icon-192.png"}
+,
   {"id": "skillTree", "name": "SkillTree", "path": "builds/skillTree/game/index.html", "description": "Play SkillTree - An exciting Unity WebGL game!", "loadingTitle": "Loading SkillTree...", "thumbnail": "icon-192.png"}
 ,
   {"id": "weak-point", "name": "Weak Point", "path": "builds/weak-point/game/index.html", "description": "Play Weak Point - An exciting Unity WebGL game!", "loadingTitle": "Loading Weak Point...", "thumbnail": "icon-192.png"}
