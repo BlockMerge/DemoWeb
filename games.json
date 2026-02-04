@@ -1,4 +1,6 @@
 [
   {"id": "blockmerge", "name": "Blockmerge", "path": "builds/blockmerge/game/index.html", "description": "Play Blockmerge - An exciting Unity WebGL game!", "loadingTitle": "Loading Blockmerge...", "thumbnail": "icon-192.png"}
+,
+  {"id": "weak-point", "name": "Weak Point", "path": "builds/weak-point/game/index.html", "description": "Play Weak Point - An exciting Unity WebGL game!", "loadingTitle": "Loading Weak Point...", "thumbnail": "icon-192.png"}
 
 ]
