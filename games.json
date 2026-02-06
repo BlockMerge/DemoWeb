@@ -1,4 +1,6 @@
 [
+  {"id": "audio", "name": "Audio", "path": "builds/audio/game/index.html", "description": "Play Audio - An exciting Unity WebGL game!", "loadingTitle": "Loading Audio...", "thumbnail": "icon-192.png"}
+,
   {"id": "blockmerge", "name": "Blockmerge", "path": "builds/blockmerge/game/index.html", "description": "Play Blockmerge - An exciting Unity WebGL game!", "loadingTitle": "Loading Blockmerge...", "thumbnail": "icon-192.png"}
 ,
   {"id": "skillTree", "name": "SkillTree", "path": "builds/skillTree/game/index.html", "description": "Play SkillTree - An exciting Unity WebGL game!", "loadingTitle": "Loading SkillTree...", "thumbnail": "icon-192.png"}
