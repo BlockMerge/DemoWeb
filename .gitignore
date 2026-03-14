@@ -1,6 +1,7 @@
 # Documentation files (not needed for deployment)
 *.md
 !README.md
+!PRIVACY.md
 
 # Python cache
 __pycache__/
