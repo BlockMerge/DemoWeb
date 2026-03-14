@@ -3,6 +3,8 @@
 ,
   {"id": "blockmerge", "name": "Blockmerge", "path": "builds/blockmerge/game/index.html", "description": "Play Blockmerge - An exciting Unity WebGL game!", "loadingTitle": "Loading Blockmerge...", "thumbnail": "icon-192.png"}
 ,
+  {"id": "main", "name": "Main", "path": "builds/main/game/index.html", "description": "Play Main - An exciting Unity WebGL game!", "loadingTitle": "Loading Main...", "thumbnail": "icon-192.png"}
+,
   {"id": "skillTree", "name": "SkillTree", "path": "builds/skillTree/game/index.html", "description": "Play SkillTree - An exciting Unity WebGL game!", "loadingTitle": "Loading SkillTree...", "thumbnail": "icon-192.png"}
 ,
   {"id": "testt", "name": "Testt", "path": "builds/testt/game/index.html", "description": "Play Testt - An exciting Unity WebGL game!", "loadingTitle": "Loading Testt...", "thumbnail": "icon-192.png"}
