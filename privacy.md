@@ -1,11 +1,12 @@
 Privacy Policy
 
-Last Updated: March 14, 2026
+Last Updated: May 21, 2026
+
 1. Introduction
 
-Welcome to BlockMerge. We respect your privacy and are committed to protecting your personal data. This policy explains how we handle your information when you play our mobile game.
+Welcome to **PurringBlocks**. This Privacy Policy explains how **Roldo Studio** ("we", "us", or "our") collects, uses, discloses, and safeguards your information when you play our mobile game, **PurringBlocks** (the "App"), also referred to as "BlockMerge" in certain web versions. We respect your privacy and are committed to protecting your personal data.
 
-Because we are based in Spain, we comply with the EU General Data Protection Regulation (GDPR) and the Spanish Organic Law on Data Protection (LOPDGDD).
+Because Roldo Studio is based in Spain, we comply with the EU General Data Protection Regulation (GDPR) and the Spanish Organic Law on Data Protection (LOPDGDD).
 
 2. Data We Collect
 
@@ -60,3 +61,9 @@ In Spain, the age of digital consent is 14. We do not knowingly collect personal
 7. Data Transfers
 
 Data may be transferred to servers located outside the European Economic Area (EEA), specifically to the US (Google/Apple/Unity). These companies use Standard Contractual Clauses (SCCs) to ensure your data remains protected.
+
+8. Contact Us
+
+If you have any questions or concerns about this Privacy Policy or our data practices, please contact us at:
+* **Developer/Entity:** Roldo Studio
+* **Email:** block.merge.dev@gmail.com
